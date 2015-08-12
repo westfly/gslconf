@@ -27,7 +27,7 @@ class ConfigParser():
         """docstring for get_curr_dict_or_list"""
         cur = 0
         curr_dict = self.all_dict
-        print "curr_statck %s"%self.key_stack
+        #print "curr_statck %s"%self.key_stack
         while cur < level:
             key = self.key_stack[cur]
             if isinstance(curr_dict, list):
@@ -43,12 +43,12 @@ class ConfigParser():
     def handler_keyvalue(self, line):
         """docstring for hander_keyvalue"""
         pos = line.find('=');
-        key = line[0 : pos].strip()
-        key = self.get_real_key(key)
-        value = line[pos + 1 : -1]
-        print "key=%s\tvalue=%s"%(key, value)
+        raw_key = line[0 : pos].strip()
+        key = self.get_real_key(raw_key)
+        value = line[pos + 1 : -1].strip()
+        #print "key=%s\tvalue=%s"%(raw_key, value)
         curr_dict_or_list = self.get_curr_dict_or_list(self.level)
-        if self.get_level_type(key) == 'Array':
+        if self.get_level_type(raw_key) == 'Array' :
             if not key in curr_dict_or_list:
                 curr_dict_or_list[key] = []
             curr_dict_or_list[key].append(value)
@@ -59,7 +59,7 @@ class ConfigParser():
         return key.count(".")
     def get_level_type(self, key):
         """docstring for get_level_type"""
-        if key.count("@") >0:
+        if key.count("@") > 0:
             return 'Array'
         else:
             return 'Type'
@@ -80,8 +80,8 @@ class ConfigParser():
             self.level -= 1
         curr_dict_or_list = self.get_curr_dict_or_list(self.level)
         self.level += 1
-        print "key=%s\tlevel=%d\ttype=%s"%(key, level, self.curr_type)
-        print "cur %s"%curr_dict_or_list
+        #print "key=%s\tlevel=%d\ttype=%s"%(key, level, self.curr_type)
+        #print "cur %s"%curr_dict_or_list
         self.key_stack.append(key)
         if (self.curr_type == 'Array'):
             if not key in curr_dict_or_list:
@@ -101,5 +101,5 @@ if __name__ == '__main__':
     config = ConfigParser(sys.argv[1])
     #config.printf()
     print config["log"]["path"]
-    print config["message"]["update_ips"]
+    print config["message"]["update_ips"][1]
     print config["ClientConfig_UTS"]["Client"]["Service"][0]["Server"][0]["IP"]
