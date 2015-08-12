@@ -91,10 +91,15 @@ class ConfigParser():
         else:
             curr_dict_or_list[key] = {}
             print "add %s\t%s"%(key, self.all_dict)
+    def __getitem__(self, key):
+        return self.all_dict[key]
     def printf(self):
         """docstring for print"""
         print "this %s"%self.all_dict
 import sys
 if __name__ == '__main__':
     config = ConfigParser(sys.argv[1])
-    config.printf()
+    #config.printf()
+    print config["log"]["path"]
+    print config["message"]["update_ips"]
+    print config["ClientConfig_UTS"]["Client"]["Service"][0]["Server"][0]["IP"]
